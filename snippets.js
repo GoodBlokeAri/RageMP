@@ -6,7 +6,7 @@
 
 
 // ```````````````````````````````````````````````````````````````````````````
-//							setHeading patch by kemperrrr
+//			setHeading patch by kemperrrr (deprecated, fixed in client)
 
 //server
 mp.events.add('playerJoin', (player) => {
@@ -21,7 +21,7 @@ mp.events.add('setHeading', (entity, heading) => {
 player.setHeading(30);
 
 // ```````````````````````````````````````````````````````````````````````````
-//							pedShot snippet 
+//				pedShot snippet 
 
 const registerHeadShot = (player) => {
     const handle = player.registerheadshot();
@@ -44,3 +44,21 @@ registerHeadShot(mp.players.local).then(face => {
     mp.game.ui.setNotificationMessage(face, face, false, 2, 'super cool title', 'super cool subtitle');
     mp.game.ui.drawNotification(false, true)
 })
+
+
+// ``````````````````````````````````````````````````````````````````````
+//				Game Version Check
+
+//	~ add to clientside index.js where you require("gamemode/index.js");
+
+if(!mp.game.dlc2.isDlcPresent(mp.game.joaat("mpsmuggler")))
+{
+    mp.gui.chat.push("THIS SERVER REQUIRES 1.41 TO JOIN!");
+    mp.events.callRemote("checkPlayerGame");
+}
+
+//	~ serverside event
+mp.events.add('checkPlayerGame', (player, legal) =>
+{
+    player.kick();
+});
